@@ -1,13 +1,16 @@
 import styled from "styled-components";
+import Typography from "@mui/material/Typography";
 
 export const LineNumber = styled.p`
   margin: 0 0 0 0;
   padding-left: 5px;
+  z-index: 0;
 `;
 
 export const LineNumberContainer = styled.div`
   width: 40px;
-  background-color: lightgrey;
+  background-color: #60656e;
+  height: 100%;
 `;
 
 export const InputContainer = styled.div`
@@ -16,9 +19,17 @@ export const InputContainer = styled.div`
   align-items: self-start;
 `;
 
-export const TitleContainer = styled.div`
+export const ButtonContainer = styled.div`
+  width: 100%;
   padding-top: 20px;
-  padding-left: 10px;
+  padding-left: 20px;
   padding-bottom: 10px;
-  background-color: lightgrey;
+  background-color: #dddee1;
+`;
+
+export const TitleContainer = styled(Typography)`
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+  background-color: #dddee1;
 `;

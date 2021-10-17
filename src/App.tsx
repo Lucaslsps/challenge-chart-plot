@@ -16,6 +16,7 @@ import {
   LineNumberContainer,
   InputContainer,
   TitleContainer,
+  ButtonContainer,
 } from "./style";
 import "./style.css";
 
@@ -51,11 +52,12 @@ export default function App() {
     /* 
       Split input string by linebreak and
       parseing each value to object format
-     */
+    */
     const inputLines = input.split("\n").map((line) => json5.parse(line));
 
     let select: string[] = [];
     let group: string[] = [];
+    let shouldBlockOperation = false;
 
     /* 
       Iteration over each value 
@@ -67,15 +69,18 @@ export default function App() {
       if (line.type === "start") {
         /* 
           Lines of type "start" should just set
-          the initial parameters 
+          the initial parameters and set the flag
+          to false
         */
         select = line.select!;
         group = line.group!;
+        shouldBlockOperation = false;
       } else if (line.type === "span") {
         /* 
           Lines of type "span" setting the 
           labels on the chart
         */
+        if (shouldBlockOperation) return;
         plotData.labels.push(String(line.begin));
         plotData.labels.push(String(line.end));
       } else if (line.type === "data") {
@@ -84,22 +89,28 @@ export default function App() {
           line on the chart or updating existing ones
           for each value of "select"
         */
+        if (shouldBlockOperation) return;
         select.map((selectValue) => {
+          /* 
+            Concatenating the current "select" value with
+            all of the "group" values for the label
+            attribute
+          */
           let label =
             group.reduce((prev, cur) => line[prev] + " " + line[cur]) +
             " " +
             selectValue;
 
           setPlotData((plotData: any) => {
-            console.log(label);
-            console.log(
-              plotData.datasets.length > 0 &&
-                plotData.datasets.filter((data: any) => data.label === label)
-            );
             if (
               plotData.datasets.filter((data: any) => data.label === label)
                 .length !== 0
             ) {
+              /* 
+                If the current label is already
+                in the plotData object, update 
+                the object with that label
+              */
               return {
                 labels: plotData.labels,
                 datasets: plotData.datasets.map((data: any) => {
@@ -112,6 +123,11 @@ export default function App() {
                 }),
               };
             } else {
+              /* 
+                If the current label is not
+                in the plotData object, create
+                a new value to be pushed into it
+              */
               const rgb = `rgb(${Math.random() * 100}, ${
                 Math.random() * 100
               }, ${Math.random() * 100})`;
@@ -135,33 +151,9 @@ export default function App() {
           Lines of type "stop" breaking the
           reading of new lines
         */
+        shouldBlockOperation = true;
       }
     });
-  };
-
-  const data = {
-    labels: ["1", "2", "3", "4", "5", "6"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
-        fill: false,
-        backgroundColor: "rgb(255, 99, 132)",
-        borderColor: "rgba(255, 99, 132, 0.2)",
-      },
-    ],
-  };
-
-  const options = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
-    },
   };
 
   return (
@@ -170,7 +162,7 @@ export default function App() {
         <Typography variant={"h4"}>Lucas' Challenge</Typography>
       </TitleContainer>
 
-      <Split direction="vertical" style={{ height: "calc(100vh - 4rem)" }}>
+      <Split direction="vertical" style={{ height: "calc(80vh - 4rem)" }}>
         <InputContainer>
           <LineNumberContainer>
             {input.split("\n").map((e, i) => {
@@ -183,15 +175,22 @@ export default function App() {
             highlight={(code) => highlight(code, languages.js, "javascript")}
             padding={10}
             style={{
-              fontFamily:
-                '"Source Code Pro", "Source Sans Pro","Fira code", "Fira Mono", monospace',
+              fontFamily: '"Source Code Pro", "Source Sans Pro", "sans-serif"',
               fontSize: 12,
+              backgroundColor: "#2e3440",
+              color: "white",
+              width: "100%",
+              height: "100%",
             }}
           />
         </InputContainer>
         <Line style={{ height: "50%" }} data={plotData} />
       </Split>
-      <Button onClick={generateChart}>GENERATE CHART</Button>
+      <ButtonContainer>
+        <Button variant={"contained"} color={"primary"} onClick={generateChart}>
+          GENERATE CHART
+        </Button>
+      </ButtonContainer>
     </div>
   );
 }
