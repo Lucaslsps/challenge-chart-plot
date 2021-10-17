@@ -1,0 +1,59 @@
+{
+  "name": "create-react-app-with-styled-components-typescript",
+  "version": "5.0.0",
+  "private": true,
+  "dependencies": {
+    "@mui/lab": "5.0.0-alpha.51",
+    "@mui/material": "next",
+    "@mui/styled-engine-sc": "next",
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@testing-library/user-event": "latest",
+    "chart.js": "^3.5.1",
+    "json5": "^2.2.0",
+    "prismjs": "^1.25.0",
+    "react": "latest",
+    "react-chartjs-2": "^3.0.5",
+    "react-dom": "latest",
+    "react-scripts": "latest",
+    "react-simple-code-editor": "^0.11.0",
+    "react-split": "^2.0.13",
+    "styled-components": "latest"
+  },
+  "scripts": {
+    "tsc": "./node_modules/.bin/tsc",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/prismjs": "^1.16.6",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/react-resizable": "^1.7.4",
+    "@types/styled-components": "latest",
+    "customize-cra": "latest",
+    "react-app-rewired": "latest",
+    "typescript": "latest"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  }
+}

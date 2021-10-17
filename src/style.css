@@ -1,0 +1,12 @@
+
+
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+  background-image: url('./horizontal.png');
+  cursor: row-resize;
+}
