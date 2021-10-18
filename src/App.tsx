@@ -33,6 +33,7 @@ export default function App() {
   const [plotData, setPlotData] = useState<any>({ labels: [], datasets: [] });
 
   const generateChart = () => {
+    if (input.length === 0) return;
     /* 
       Split input string by linebreak and
       parseing each value to object format
