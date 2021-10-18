@@ -86,7 +86,7 @@ export default function App() {
           let label =
             group.reduce((prev, cur) => line[prev] + " " + line[cur]) +
             " " +
-            selectValue;
+            selectValue.replaceAll("_", " ");
 
           label = label
             .toLowerCase()
