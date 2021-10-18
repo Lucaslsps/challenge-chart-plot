@@ -20,21 +20,6 @@ import {
 } from "./style";
 import "./style.css";
 
-interface ILine {
-  type: string;
-  timestamp: Date;
-  begin?: Date;
-  end?: Date;
-  select?: string[];
-  group?: string[];
-  [otherOptions: string]: any;
-}
-
-interface IPlot {
-  labels: string[];
-  datasets: IData[];
-}
-
 interface IData {
   label: string;
   data: string[];
@@ -44,7 +29,6 @@ interface IData {
 }
 
 export default function App() {
-  const [state, setState] = useState({ width: 200, height: 200 });
   const [input, setInput] = useState("");
   const [plotData, setPlotData] = useState<any>({ labels: [], datasets: [] });
 
@@ -53,7 +37,10 @@ export default function App() {
       Split input string by linebreak and
       parseing each value to object format
     */
-    const inputLines = input.split("\n").map((line) => json5.parse(line));
+    const inputLines = input
+      .trim()
+      .split("\n")
+      .map((line) => json5.parse(line));
 
     let select: string[] = [];
     let group: string[] = [];
@@ -81,8 +68,8 @@ export default function App() {
           labels on the chart
         */
         if (shouldBlockOperation) return;
-        plotData.labels.push(String(line.begin));
-        plotData.labels.push(String(line.end));
+        plotData.labels.push("00:00");
+        plotData.labels.push(String(line.end - line.begin));
       } else if (line.type === "data") {
         /* 
           Lines of type "data" creating new
@@ -100,6 +87,14 @@ export default function App() {
             group.reduce((prev, cur) => line[prev] + " " + line[cur]) +
             " " +
             selectValue;
+
+          label = label
+            .toLowerCase()
+            .split(" ")
+            .map(function (word) {
+              return word[0].toUpperCase() + word.substr(1);
+            })
+            .join(" ");
 
           setPlotData((plotData: any) => {
             if (
@@ -159,10 +154,12 @@ export default function App() {
   return (
     <div>
       <TitleContainer>
-        <Typography variant={"h4"}>Lucas' Challenge</Typography>
+        <Typography variant={"h5"} fontWeight={"bold"}>
+          Lucas Peixoto's Challenge
+        </Typography>
       </TitleContainer>
 
-      <Split direction="vertical" style={{ height: "calc(80vh - 4rem)" }}>
+      <Split direction="vertical" style={{ height: "calc(94vh - 4rem)" }}>
         <InputContainer>
           <LineNumberContainer>
             {input.split("\n").map((e, i) => {
@@ -176,7 +173,7 @@ export default function App() {
             padding={10}
             style={{
               fontFamily: '"Source Code Pro", "Source Sans Pro", "sans-serif"',
-              fontSize: 12,
+              fontSize: 15,
               backgroundColor: "#2e3440",
               color: "white",
               width: "100%",
@@ -184,7 +181,7 @@ export default function App() {
             }}
           />
         </InputContainer>
-        <Line style={{ height: "50%" }} data={plotData} />
+        <Line data={plotData} height={100} />
       </Split>
       <ButtonContainer>
         <Button variant={"contained"} color={"primary"} onClick={generateChart}>
