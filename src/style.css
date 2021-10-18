@@ -6,7 +6,7 @@
   background-position: 50%;
 }
 
-.gutter.gutter-horizontal {
+.gutter.gutter-vertical {
   background-image: url('./horizontal.png');
   cursor: row-resize;
 }
